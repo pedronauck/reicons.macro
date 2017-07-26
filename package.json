@@ -1,11 +1,12 @@
 {
   "name": "reicons.macro",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
     "build": "babel src -d dist",
-    "test": "xo && jest"
+    "test": "xo && jest",
+    "prepublish": "xo && yarn run build"
   },
   "dependencies": {
     "babel-template": "^6.25.0",
