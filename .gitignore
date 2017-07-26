@@ -12,4 +12,3 @@ node_modules
 .node_repl_history
 yarn.lock
 .nyc_output
-dist
