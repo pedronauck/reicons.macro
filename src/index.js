@@ -29,6 +29,9 @@ const svgString = compose(
 const svgBodyExpression = (ast) =>
   traverse.removeProperties(ast.program.body[0].expression)
 
+const getParentName = (path) =>
+  t.isVariableDeclarator(path) ? path.node.id.name : getParentName(path.parentPath)
+
 const reicons = (path, { file: { opts: { filename } } }) => {
   const args = path.get('arguments')
   const file = args[0].evaluate().value
@@ -38,7 +41,7 @@ const reicons = (path, { file: { opts: { filename } } }) => {
   traverse(parsedAst, svgtojsx)
 
   path.replaceWith(t.functionExpression(
-    t.identifier(path.parentPath.node.id.name),
+    t.identifier(getParentName(path.parentPath)),
     [t.identifier('props')],
     t.blockStatement(
       [t.returnStatement(svgBodyExpression(parsedAst))]

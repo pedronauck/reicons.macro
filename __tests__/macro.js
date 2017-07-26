@@ -24,6 +24,17 @@ pluginTester({
       const reicons = require('../reicons.macro')
       const IcCheck = reicons('./tick.svg')
     `
+  }, {
+    title: 'with function around',
+    code: `
+      const reicons = require('../reicons.macro')
+
+      const createIcon = (Icon) => {
+        return <Icon />
+      }
+
+      const IcCheck = createIcon(reicons('./tick.svg'))
+    `
   }])
 })
 
