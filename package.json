@@ -1,0 +1,51 @@
+{
+  "name": "reicons.macro",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "reicons.macro.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "babel-template": "^6.25.0",
+    "babel-traverse": "^6.25.0",
+    "babel-types": "^6.25.0",
+    "babylon": "^6.17.4",
+    "compose-function": "^3.0.3",
+    "css-to-object": "^1.0.0",
+    "lodash.camelcase": "^4.3.0",
+    "resolve-from": "^3.0.0",
+    "svgo": "^0.7.2"
+  },
+  "devDependencies": {
+    "ast-pretty-print": "^2.0.0",
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-macros": "^0.5.2",
+    "babel-plugin-tester": "^3.3.0",
+    "babel-preset-env": "^1.6.0",
+    "jest": "^20.0.4",
+    "xo": "^0.18.2"
+  },
+  "xo": {
+    "parser": "babel-eslint",
+    "semicolon": false,
+    "space": true,
+    "rules": {
+      "curly": 0,
+      "new-cap": 0,
+      "arrow-parens": 0,
+      "object-curly-spacing": 0,
+      "no-await-in-loop": 0,
+      "capitalized-comments": 0,
+      "generator-star-spacing": 0,
+      "brace-style": [
+        "error",
+        "stroustrup",
+        {
+          "allowSingleLine": true
+        }
+      ]
+    }
+  }
+}
