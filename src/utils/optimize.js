@@ -1,4 +1,4 @@
-import Svgo from 'svgo'
+const Svgo = require('svgo')
 
 const optimize = (svgString) => {
   let result
