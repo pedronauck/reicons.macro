@@ -7,7 +7,7 @@ const IcCheck = reicons('./tick.svg')
 
       ↓ ↓ ↓ ↓ ↓ ↓
 
-var IcCheck = function IcCheck(props) {
+const IcCheck = function IcCheck(props) {
   return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125" className="Icon" style={{
     border: '1px solid #fff'
   }} {...props}><path d="M74.042 35.27a3.5 3.5 0 0 0-4.949.08L42 63.333 27.938 50.422a3.499 3.499 0 1 0-4.734 5.156l16.572 15.216a3.49 3.49 0 0 0 2.366.922c.916 0 1.83-.357 2.516-1.065l29.464-30.432a3.5 3.5 0 0 0-.08-4.949zM50 8.5C27.117 8.5 8.5 27.117 8.5 50S27.117 91.5 50 91.5 91.5 72.883 91.5 50 72.883 8.5 50 8.5zm0 76c-19.023 0-34.5-15.477-34.5-34.5S30.977 15.5 50 15.5 84.5 30.977 84.5 50 69.023 84.5 50 84.5z" /></svg>;

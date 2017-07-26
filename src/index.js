@@ -5,9 +5,9 @@ const { parse } = require('babylon')
 const { default: traverse } = require('babel-traverse')
 const compose = require('compose-function')
 const resolveFrom = require('resolve-from')
+// const pretty = require('ast-pretty-print')
 const optimize = require('./utils/optimize')
 const svgtojsx = require('./utils/svg-to-jsx')
-const buildComponent = require('./utils/build-component')
 
 const escapeBraces = (raw) =>
   raw.replace(/(\{|\})/g, '{`$1`}')
@@ -37,13 +37,13 @@ const reicons = (path, { file: { opts: { filename } } }) => {
 
   traverse(parsedAst, svgtojsx)
 
-  const svgCode = svgBodyExpression(parsedAst)
-  const replacement = buildComponent({
-    ICON_NAME: t.identifier(path.parentPath.node.id.name),
-    SVG_CODE: svgCode
-  })
-
-  path.parentPath.parentPath.replaceWith(replacement)
+  path.replaceWith(t.functionExpression(
+    t.identifier(path.parentPath.node.id.name),
+    [t.identifier('props')],
+    t.blockStatement(
+      [t.returnStatement(svgBodyExpression(parsedAst))]
+    )
+  ))
 }
 
 module.exports = ({ references, state }) =>

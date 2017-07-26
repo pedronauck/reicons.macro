@@ -1,3 +1,5 @@
+/* eslint no-undef: 0 */
+
 const path = require('path')
 const pluginTester = require('babel-plugin-tester')
 const plugin = require('babel-macros')
