@@ -15,6 +15,12 @@ expect.addSnapshotSerializer({
   }
 })
 
+const hasError = (message) => (err) => {
+  if (err && new RegExp(message).test(err.message)) {
+    return true
+  }
+}
+
 pluginTester({
   plugin,
   snapshot: true,
@@ -22,7 +28,7 @@ pluginTester({
     title: 'as function',
     code: `
       const reicons = require('../reicons.macro')
-      const IcCheck = reicons('./tick.svg')
+      const IcTick = reicons('./tick.svg')
     `
   }, {
     title: 'with function around',
@@ -33,7 +39,23 @@ pluginTester({
         return <Icon />
       }
 
-      const IcCheck = createIcon(reicons('./tick.svg'))
+      const IcTick = createIcon(reicons('./tick.svg'))
+    `
+  }, {
+    title: 'throw if has not .svg file extension',
+    snapshot: false,
+    error: hasError('You need to require a valid .svg file!'),
+    code: `
+      const reicons = require('../reicons.macro')
+      const IcTick = reicons('./tick')
+    `
+  }, {
+    title: 'throw if file doesn\'t exist',
+    snapshot: false,
+    error: hasError('Cannot find module \'./check.svg\''),
+    code: `
+      const reicons = require('../reicons.macro')
+      const IcCheck = reicons('./check.svg')
     `
   }])
 })

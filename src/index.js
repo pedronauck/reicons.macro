@@ -20,7 +20,8 @@ const parseAst = (rawSource) => parse(rawSource, {
   plugins: ['jsx']
 })
 
-const svgString = compose(
+const svgStringAndAst = compose(
+  parseAst,
   escapeBraces,
   optimize,
   readSvgFile
@@ -29,19 +30,25 @@ const svgString = compose(
 const svgBodyExpression = (ast) =>
   traverse.removeProperties(ast.program.body[0].expression)
 
-const getParentName = (path) =>
-  t.isVariableDeclarator(path) ? path.node.id.name : getParentName(path.parentPath)
+const getParentName = (path) => {
+  if (!path || !path.parentPath) return null
+  return t.isVariableDeclarator(path) ? path.node.id.name : getParentName(path.parentPath)
+}
+
+const fileValue = (path) =>
+  path.get('arguments')[0].evaluate().value
+
+const isSvgFile = (path) =>
+  /.svg$/.test(fileValue(path))
 
 const reicons = (path, { file: { opts: { filename } } }) => {
-  const args = path.get('arguments')
-  const file = args[0].evaluate().value
-  const raw = svgString(file, filename)
-  const parsedAst = parseAst(raw)
+  const funcName = getParentName(path.parentPath)
+  const parsedAst = svgStringAndAst(fileValue(path), filename)
 
   traverse(parsedAst, svgtojsx)
 
   path.replaceWith(t.functionExpression(
-    t.identifier(getParentName(path.parentPath)),
+    funcName ? t.identifier(funcName) : null,
     [t.identifier('props')],
     t.blockStatement(
       [t.returnStatement(svgBodyExpression(parsedAst))]
@@ -51,7 +58,14 @@ const reicons = (path, { file: { opts: { filename } } }) => {
 
 module.exports = ({ references, state }) =>
   references.default.forEach(({ parentPath }) => {
-    if (t.isCallExpression(parentPath)) {
+    if (!isSvgFile(parentPath)) {
+      throw state.file.buildCodeFrameError(
+        parentPath.node,
+        'You need to require a valid .svg file!'
+      )
+    }
+
+    if (isSvgFile(parentPath) && t.isCallExpression(parentPath)) {
       reicons(parentPath, state)
     }
   })
