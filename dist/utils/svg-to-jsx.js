@@ -35,6 +35,14 @@ var transformRestProps = function transformRestProps(path) {
   path.node.name.name = camelCase(path.node.name.name);
 };
 
+var removeFillProps = function removeFillProps(path) {
+  var nodeName = path.node.name.name;
+
+  if (nodeName === 'fill' || nodeName === 'fillRule') {
+    path.remove();
+  }
+};
+
 var transformBasicProps = function transformBasicProps(path) {
   if (t.isJSXIdentifier(path.node.name)) {
     transformRestProps(path);
@@ -55,6 +63,7 @@ module.exports = {
   JSXAttribute: function JSXAttribute(path) {
     transformNamespaceProps(path);
     transformBasicProps(path);
+    removeFillProps(path);
   },
   JSXOpeningElement: function JSXOpeningElement(path) {
     addSpreadProps(path);
