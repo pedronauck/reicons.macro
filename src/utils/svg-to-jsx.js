@@ -38,6 +38,14 @@ const transformRestProps = (path) => {
   path.node.name.name = camelCase(path.node.name.name)
 }
 
+const removeFillProps = (path) => {
+  const nodeName = path.node.name.name
+
+  if (nodeName === 'fill' || nodeName === 'fillRule') {
+    path.remove()
+  }
+}
+
 const transformBasicProps = (path) => {
   if (t.isJSXIdentifier(path.node.name)) {
     transformRestProps(path)
@@ -56,6 +64,7 @@ module.exports = {
   JSXAttribute(path) {
     transformNamespaceProps(path)
     transformBasicProps(path)
+    removeFillProps(path)
   },
   JSXOpeningElement(path) {
     addSpreadProps(path)
