@@ -5,7 +5,7 @@ const { parse } = require('babylon')
 const { default: traverse } = require('babel-traverse')
 const compose = require('compose-function')
 const resolveFrom = require('resolve-from')
-const pretty = require('ast-pretty-print')
+// const pretty = require('ast-pretty-print')
 const optimize = require('./utils/optimize')
 const svgtojsx = require('./utils/svg-to-jsx')
 

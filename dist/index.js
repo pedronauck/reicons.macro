@@ -49,16 +49,16 @@ var fileValue = function fileValue(path) {
   return path.get('arguments')[0].evaluate().value;
 };
 
-var isSvgFile = function isSvgFile(path) {
-  return (/.svg$/.test(fileValue(path))
+var isSvgFile = function isSvgFile(file) {
+  return (/.svg$/.test(file)
   );
 };
 
-var reicons = function reicons(path, _ref) {
+var reicons = function reicons(path, file, _ref) {
   var filename = _ref.file.opts.filename;
 
   var funcName = getParentName(path.parentPath);
-  var parsedAst = svgStringAndAst(fileValue(path), filename);
+  var parsedAst = svgStringAndAst(file, filename);
 
   traverse(parsedAst, svgtojsx);
 
@@ -71,12 +71,14 @@ module.exports = function (_ref2) {
   return references.default.forEach(function (_ref3) {
     var parentPath = _ref3.parentPath;
 
-    if (!isSvgFile(parentPath)) {
+    var file = fileValue(parentPath);
+
+    if (!isSvgFile(file)) {
       throw state.file.buildCodeFrameError(parentPath.node, 'You need to require a valid .svg file!');
     }
 
-    if (isSvgFile(parentPath) && t.isCallExpression(parentPath)) {
-      reicons(parentPath, state);
+    if (isSvgFile(file) && t.isCallExpression(parentPath)) {
+      reicons(parentPath, file, state);
     }
   });
 };
