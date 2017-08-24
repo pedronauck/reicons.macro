@@ -13,7 +13,45 @@ const IcTick = function IcTick(props) {
 
 `;
 
-exports[`2. with function around 1`] = `
+exports[`2. with template literals 1`] = `
+
+const reicons = require('../reicons.macro')
+
+const ICON = 'tick'
+const IcTick = createIcon(reicons(\`./\${ICON}.svg\`))
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const ICON = 'tick';
+const IcTick = createIcon(function IcTick(props) {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70" {...props}><path d="M68.71 64.727l.07-.07L39.125 35 69.142 4.982A2.918 2.918 0 1 0 65.019.858L35 30.876 4.982.858A2.918 2.918 0 0 0 0 2.918C0 3.72.327 4.45.858 4.975L30.876 35 .858 65.018a2.918 2.918 0 1 0 4.124 4.124L35 39.124l29.657 29.657.07-.07c.525.758 1.365 1.289 2.356 1.289A2.918 2.918 0 0 0 70 67.083c0-.997-.53-1.831-1.29-2.356" /></svg>;
+});
+
+`;
+
+exports[`3. with function around 1`] = `
+
+const reicons = require('../reicons.macro')
+
+const createIcon = (Icon) => {
+  return <Icon />
+}
+
+const IcTick = createIcon(reicons('./tick.svg'))
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const createIcon = Icon => {
+  return <Icon />;
+};
+
+const IcTick = createIcon(function IcTick(props) {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70" {...props}><path d="M68.71 64.727l.07-.07L39.125 35 69.142 4.982A2.918 2.918 0 1 0 65.019.858L35 30.876 4.982.858A2.918 2.918 0 0 0 0 2.918C0 3.72.327 4.45.858 4.975L30.876 35 .858 65.018a2.918 2.918 0 1 0 4.124 4.124L35 39.124l29.657 29.657.07-.07c.525.758 1.365 1.289 2.356 1.289A2.918 2.918 0 0 0 70 67.083c0-.997-.53-1.831-1.29-2.356" /></svg>;
+});
+
+`;
+
+exports[`4. with function around 1`] = `
 
 const reicons = require('../reicons.macro')
 

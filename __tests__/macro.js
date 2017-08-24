@@ -31,6 +31,14 @@ pluginTester({
       const IcTick = reicons('./tick.svg')
     `
   }, {
+    title: 'with template literals',
+    code: `
+      const reicons = require('../reicons.macro')
+
+      const ICON = 'tick'
+      const IcTick = createIcon(reicons(\`./\${ICON}.svg\`))
+    `
+  }, {
     title: 'with function around',
     code: `
       const reicons = require('../reicons.macro')
@@ -40,14 +48,6 @@ pluginTester({
       }
 
       const IcTick = createIcon(reicons('./tick.svg'))
-    `
-  }, {
-    title: 'throw if has not .svg file extension',
-    snapshot: false,
-    error: hasError('You need to require a valid .svg file!'),
-    code: `
-      const reicons = require('../reicons.macro')
-      const IcTick = reicons('./tick')
     `
   }, {
     title: 'throw if file doesn\'t exist',

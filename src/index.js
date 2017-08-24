@@ -5,7 +5,7 @@ const { parse } = require('babylon')
 const { default: traverse } = require('babel-traverse')
 const compose = require('compose-function')
 const resolveFrom = require('resolve-from')
-// const pretty = require('ast-pretty-print')
+const pretty = require('ast-pretty-print')
 const optimize = require('./utils/optimize')
 const svgtojsx = require('./utils/svg-to-jsx')
 
@@ -38,12 +38,11 @@ const getParentName = (path) => {
 const fileValue = (path) =>
   path.get('arguments')[0].evaluate().value
 
-const isSvgFile = (path) =>
-  /.svg$/.test(fileValue(path))
+const isSvgFile = (file) => /.svg$/.test(file)
 
-const reicons = (path, { file: { opts: { filename } } }) => {
+const reicons = (path, file, { file: { opts: { filename } } }) => {
   const funcName = getParentName(path.parentPath)
-  const parsedAst = svgStringAndAst(fileValue(path), filename)
+  const parsedAst = svgStringAndAst(file, filename)
 
   traverse(parsedAst, svgtojsx)
 
@@ -58,14 +57,16 @@ const reicons = (path, { file: { opts: { filename } } }) => {
 
 module.exports = ({ references, state }) =>
   references.default.forEach(({ parentPath }) => {
-    if (!isSvgFile(parentPath)) {
+    const file = fileValue(parentPath)
+
+    if (!isSvgFile(file)) {
       throw state.file.buildCodeFrameError(
         parentPath.node,
         'You need to require a valid .svg file!'
       )
     }
 
-    if (isSvgFile(parentPath) && t.isCallExpression(parentPath)) {
-      reicons(parentPath, state)
+    if (isSvgFile(file) && t.isCallExpression(parentPath)) {
+      reicons(parentPath, file, state)
     }
   })
