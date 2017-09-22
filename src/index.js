@@ -1,5 +1,6 @@
 const fs = require('fs')
 const { dirname } = require('path')
+const { createMacro } = require('babel-macros')
 const t = require('babel-types')
 const { parse } = require('babylon')
 const { default: traverse } = require('babel-traverse')
@@ -55,7 +56,7 @@ const reicons = (path, file, { file: { opts: { filename } } }) => {
   ))
 }
 
-module.exports = ({ references, state }) =>
+module.exports = createMacro(({ references, state }) => {
   references.default.forEach(({ parentPath }) => {
     const file = fileValue(parentPath)
 
@@ -70,3 +71,4 @@ module.exports = ({ references, state }) =>
       reicons(parentPath, file, state)
     }
   })
+})

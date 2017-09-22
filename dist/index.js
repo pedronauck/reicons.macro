@@ -5,13 +5,16 @@ var fs = require('fs');
 var _require = require('path'),
     dirname = _require.dirname;
 
+var _require2 = require('babel-macros'),
+    createMacro = _require2.createMacro;
+
 var t = require('babel-types');
 
-var _require2 = require('babylon'),
-    parse = _require2.parse;
+var _require3 = require('babylon'),
+    parse = _require3.parse;
 
-var _require3 = require('babel-traverse'),
-    traverse = _require3.default;
+var _require4 = require('babel-traverse'),
+    traverse = _require4.default;
 
 var compose = require('compose-function');
 var resolveFrom = require('resolve-from');
@@ -65,10 +68,11 @@ var reicons = function reicons(path, file, _ref) {
   path.replaceWith(t.functionExpression(funcName ? t.identifier(funcName) : null, [t.identifier('props')], t.blockStatement([t.returnStatement(svgBodyExpression(parsedAst))])));
 };
 
-module.exports = function (_ref2) {
+module.exports = createMacro(function (_ref2) {
   var references = _ref2.references,
       state = _ref2.state;
-  return references.default.forEach(function (_ref3) {
+
+  references.default.forEach(function (_ref3) {
     var parentPath = _ref3.parentPath;
 
     var file = fileValue(parentPath);
@@ -81,4 +85,4 @@ module.exports = function (_ref2) {
       reicons(parentPath, file, state);
     }
   });
-};
+});
