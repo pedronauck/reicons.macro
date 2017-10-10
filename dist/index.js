@@ -52,11 +52,6 @@ var fileValue = function fileValue(path) {
   return path.get('arguments')[0].evaluate().value;
 };
 
-var isSvgFile = function isSvgFile(file) {
-  return (/.svg$/.test(file)
-  );
-};
-
 var reicons = function reicons(path, file, _ref) {
   var filename = _ref.file.opts.filename;
 
@@ -77,11 +72,7 @@ module.exports = createMacro(function (_ref2) {
 
     var file = fileValue(parentPath);
 
-    if (!isSvgFile(file)) {
-      throw state.file.buildCodeFrameError(parentPath.node, 'You need to require a valid .svg file!');
-    }
-
-    if (isSvgFile(file) && t.isCallExpression(parentPath)) {
+    if (t.isCallExpression(parentPath)) {
       reicons(parentPath, file, state);
     }
   });
