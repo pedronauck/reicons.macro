@@ -39,8 +39,6 @@ const getParentName = (path) => {
 const fileValue = (path) =>
   path.get('arguments')[0].evaluate().value
 
-const isSvgFile = (file) => /.svg$/.test(file)
-
 const reicons = (path, file, { file: { opts: { filename } } }) => {
   const funcName = getParentName(path.parentPath)
   const parsedAst = svgStringAndAst(file, filename)
@@ -60,14 +58,7 @@ module.exports = createMacro(({ references, state }) => {
   references.default.forEach(({ parentPath }) => {
     const file = fileValue(parentPath)
 
-    if (!isSvgFile(file)) {
-      throw state.file.buildCodeFrameError(
-        parentPath.node,
-        'You need to require a valid .svg file!'
-      )
-    }
-
-    if (isSvgFile(file) && t.isCallExpression(parentPath)) {
+    if (t.isCallExpression(parentPath)) {
       reicons(parentPath, file, state)
     }
   })
